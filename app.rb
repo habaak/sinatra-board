@@ -47,7 +47,8 @@ end
 
 #게시글을 모두 보여주는 곳
 get '/posts' do
-    @posts = Post.all
+    #@posts = Post.all.reverse
+    @posts = Post.all(:order => [:id.desc])#Symbol로 처리하여 속도를 높힌다.
     erb :'posts/posts'
 end
 

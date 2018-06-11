@@ -12,7 +12,8 @@
     </tr>
   </thead>
   <tbody>
-      <% @posts.reverse.each do |p| %>
+      <% @posts.each do |p| %>
+      
     <tr>
       <th scope="row"><%= p.id%></th>
       <td><%= p.title%></td>
