@@ -64,3 +64,9 @@ get '/posts/create' do
     Post.create(title: @title, body: @body)
     erb :'posts/create'
 end
+
+get '/posts/:id' do #variable routing
+    @id = params[:id]
+    @post = Post.get(@id)
+    erb :'posts/show'
+end
