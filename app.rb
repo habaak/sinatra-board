@@ -70,3 +70,26 @@ get '/posts/:id' do #variable routing
     @post = Post.get(@id)
     erb :'posts/show'
 end
+
+get '/posts/destroy/:id' do
+    @id = params[:id]
+    Post.get(@id).destroy
+    #erb :'posts/destroy'
+    redirect '/posts'
+end
+
+# 수정하기
+get '/posts/edit/:id' do
+    @id = params[:id]
+    @post = Post.get(@id)
+    erb :'posts/edit'
+end
+# id를 받아와야함
+# 값을 받아서 업데이트
+get '/posts/update/:id' do
+    @id = params[:id]
+    Post.get(@id).update(title: params[:title], body: params[:body])
+    # @post = Post.get(@id)
+    # erb :'posts/update'
+    redirect '/posts/'+@id
+end
