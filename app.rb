@@ -1,6 +1,8 @@
 #app.rb
+gem 'json','~> 1.6'
 require 'sinatra'
 require 'sinatra/reloader'
+require 'bcrypt'
 require './model.rb'
 
 before do 
@@ -68,4 +70,63 @@ get '/posts/update/:id' do
     # @post = Post.get(@id)
     # erb :'posts/update'
     redirect '/posts/'+@id
+end
+#======================
+get '/users/login' do
+    erb :'users/login'
+end
+
+get '/users/auth/:id' do
+    @email = params[:email]
+    @password = params[:password]
+    @user = User.get(@id)
+    redirect '/posts'
+end
+#=======================
+get '/users/signup' do
+    erb :'users/signup'
+end
+
+get '/users/create' do
+    @name = params[:name]
+    @email = params[:email]
+    @password = params[:password]
+    @password_chk = params[:password_chk]
+    if @password != @password_chk
+        redirect '/'
+    else
+        User.create(name: @name, email: @email, password: @password)
+        redirect '/users'
+    end
+end
+
+get '/users' do
+    @user = User.all(:order => [:id.desc])#Symbol로 처리하여 속도를 높힌다.
+    erb :'users/users'
+end
+
+get '/users/details/:id' do
+    @id = params[:id]
+    @user = User.get(@id)
+    erb :'users/details'
+end
+
+get '/users/destroy' do 
+end
+
+get '/users/edit' do
+    @id = params[:id]
+    @user = User.get(@id)
+    erb :'users/edit'
+end
+
+get '/users/update/:id' do
+    @id = params[:id]
+    User.get(@id).update(
+        email: params[:email], 
+        name: params[:name], 
+        password: BCrpyt::password.create(params[:password]))
+    # @post = Post.get(@id)
+    # erb :'posts/update'
+    redirect '/users/users'+@id
 end
